@@ -1,13 +1,37 @@
 <script lang="ts">
-    export let loggedIn = false;
-    import exitLogo from '../assets/exit.svg'
+    import { loggedIn } from '../store';
+    import exitLogo from '/exit.svg';
+
+    let loggedInValue: boolean;
+
+    loggedIn.subscribe((value) => loggedInValue = value);
+
+    async function logout() {
+        localStorage.clear();
+        loggedIn.set(false);
+        /*
+        const res = await fetch('http://localhost:8888/tracks?access_token=' + localStorage.getItem('access_token'), {
+            mode: 'cors',
+            headers: {
+                // 'Access-Control-Allow-Origin':'*',
+                // 'Access-Control-Allow-Credentials': 'true',
+            //     Cookie: `access_token=${localStorage.getItem('access_token')}; `
+            },
+            credentials: 'include',
+            // credentials: "same-origin",
+        })
+    
+        console.log(await res.json());
+        */
+    }
+    
 </script>
 
 <header>
     <div class="logo">WhoIsMyFavorit</div>
     
-    {#if loggedIn}
-        <button class="btn logout-btn">
+    {#if loggedInValue}
+        <button class="btn logout-btn" on:click={logout}>
             <span>Logout</span>
             <img src={exitLogo} alt="Logout icon" />
         </button>
