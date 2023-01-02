@@ -4,8 +4,9 @@
     import Header from './lib/Header.svelte';
     import Footer from './lib/Footer.svelte';
     import Login from './lib/Login.svelte';
+    import Game from './lib/Game.svelte';
 
-    let loggedInValue: boolean;
+    let loggedInValue = false;
 
     loggedIn.subscribe((value) => loggedInValue = value);
 
@@ -13,20 +14,8 @@
 
 <Header />
 {#if loggedInValue}
-    <main></main>
+    <Game />
 {:else}
     <Login />
 {/if}
 <Footer />
-
-<style>
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    flex: 1;
-
-    background-color: var(--yellow);
-}
-</style>
