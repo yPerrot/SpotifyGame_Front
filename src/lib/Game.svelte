@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { navigate } from 'svelte-routing';
+
     async function getArtist() {
         const resp = await fetch('http://localhost:8888/artists?access_token=' + localStorage.getItem('access_token'));
         const data = await resp.json();
@@ -81,6 +83,7 @@
 
     function reload() {
         const currentId = progress.findIndex((e) => e === 'current');
+        if (currentId === progress.length -1) navigate('/display', { replace: true });
 
         progress[currentId] = Math.random() > 0.5 ? 'passed' : 'failed';
         if (currentId < progress.length - 1) progress[currentId + 1] = 'current';

@@ -1,6 +1,7 @@
 import './global.css';
 import { loggedIn } from './store';
 import Main from './Main.svelte';
+import { navigate } from 'svelte-routing';
 
 // Remove access_token & refresh_token
 const url_string = window.location.search;
@@ -12,7 +13,10 @@ const refresh_token = url.get('refresh_token');
 url.delete('access_token');
 url.delete('refresh_token');
 
-if (access_token) localStorage.setItem('access_token', access_token);
+if (access_token) {
+    localStorage.setItem('access_token', access_token);
+    navigate('/game', { replace: true });
+}
 if (refresh_token) localStorage.setItem('refresh_token', refresh_token);
 
 if (access_token) document.cookie = `access_token=${access_token}; SameSite=None; Secure`;
