@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { navigate } from 'svelte-routing';
     import { loggedIn } from '../store';
     import exitLogo from '/exit.svg';
 
@@ -9,6 +10,7 @@
     async function logout() {
         localStorage.clear();
         loggedIn.set(false);
+        navigate('/', { replace: true });
         /*
         const res = await fetch('http://localhost:8888/tracks?access_token=' + localStorage.getItem('access_token'), {
             mode: 'cors',
