@@ -36,8 +36,6 @@ main {
     flex: 1;
     background-color: #f1f333;
 
-    /* gap: 2rem; */
-
     padding: 3rem;
 }
 
@@ -48,26 +46,30 @@ main {
     display: flex;
     gap: 0.5rem;
 
-    padding: 0.5rem 1rem;
-
+.artist {
+    background-color: var(--pink);
+    
     width: 300px;
 
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    
+    padding: 0.5rem 1rem;
     margin-bottom: 1rem;
-
+    
+    font-weight: 500;
+    font-size: 1.25rem;
     text-overflow: ellipsis;
-}
-
-.top {
-    width: 400px;
-    border-radius: 50px;
-    font-size: 2rem;
-
-    margin-bottom: 2rem;
+    
+    border-radius: 40px;
+    border: 2px solid black;
+    
 }
 
 .artist > img {
-    height: 25px;
-    width: 25px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
 
     display: inline-block;
@@ -76,31 +78,26 @@ main {
     flex-shrink: 0;
 }
 
-.top > img {
-    height: 50px;
-    width: 50px;
-}
-
-.num {
-    display: inline-block;
-    height: 25px;
-    width: 25px;
-    border-radius: 50%;
-    background-color: white;
-
-    text-align: center;
-
-    flex-shrink: 0;
-}
-
-.top > .num {
-    height: 50px;
-    width: 50px;
-}
-
 .name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* TOP */
+.artist:nth-child(1),
+.artist:nth-child(2),
+.artist:nth-child(3) {
+    width: 400px;
+    font-size: 1.75rem;
+    border-radius: 70px;
+    margin-bottom: 1.5rem;
+}
+
+.artist:nth-child(1) > img,
+.artist:nth-child(2) > img,
+.artist:nth-child(3) > img {
+    height: 50px;
+    width: 50px;
 }
 </style>
