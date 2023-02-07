@@ -41,33 +41,40 @@
 
 </script>
 
-<main class="game-main">
-    <header>
-        <span>Who is your favorit artist between those 2?</span>
-        <div class="counter">
-            {#each progress as state, i}
 
-                {#if state === 'passed'}
-                    <span style="background-color: var(--green);"></span>
-                {:else if state === 'failed'}
-                    <span style="background-color: var(--red);"></span>
-                {:else if state === 'current'}
-                    <span style="width: 30px; border-radius: 15px;"></span>
-                {:else}
-                    <span></span>
-                {/if}
 
-            {/each}
-        </div>
-    </header>
-
-    <!-- <div class="separator">VS</div> -->
-
-    {#await promise}
+{#await promise}
     <!-- TODO: Add style -->
-        <p>Bip Boup, Creating your profile</p>
-        <p>(Kiding, Waiting for the Spotify API to respond)</p>
-    {:then data}
+    <main>
+        <div class="loader">
+            <div class="spinner"></div>
+            <div class="loader__txt">
+                <p>Bip Boup, Creating your profile</p>
+                <p>(Kiding, Waiting for the Spotify API to respond)</p>
+            </div>
+        </div>
+    </main>
+{:then data}
+    <main class="game-main">
+        <header>
+            <span>Who is your favorit artist between those 2?</span>
+            <div class="counter">
+                {#each progress as state, i}
+
+                    {#if state === 'passed'}
+                        <span style="background-color: var(--green);"></span>
+                    {:else if state === 'failed'}
+                        <span style="background-color: var(--red);"></span>
+                    {:else if state === 'current'}
+                        <span style="width: 30px; border-radius: 15px;"></span>
+                    {:else}
+                        <span></span>
+                    {/if}
+
+                {/each}
+            </div>
+        </header>
+
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="left game-panel" style="background-color: rgb({data[0].color.r + ',' + data[0].color.g + ',' + data[0].color.b});" on:click={(event) => reload(event, data[0].id, data)}>
             <img class="artist-img" src={data[0].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isReadable(data[0].color.r, data[0].color.g, data[0].color.b) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
@@ -79,11 +86,13 @@
             <img class="artist-img" src={data[1].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isReadable(data[1].color.r, data[1].color.g, data[1].color.b) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
             <span class="artist-name" style="color: {isReadable(data[1].color.r, data[1].color.g, data[1].color.b) ? "rgb(16, 16, 16)" : "white"}">{data[1].name}</span>
         </div>
-    {:catch error}
+    </main>
+{:catch error}
+    <main>
         <p style="color: red">{error.message}</p>
-    {/await}
+    </main>
+{/await}
 
-</main>
 
 <style>
 main {
@@ -95,12 +104,17 @@ main {
 
     position: relative;
 
+    background-color: #f1f333;
+
+    
+    height: 100%;
+    width: 100%;
+}
+
+.game-main {
     display: grid;
     grid-template-columns: 1fr 1fr;
     /* gap: 1px; */
-
-    height: 100%;
-    width: 100%;
 }
 
 .game-panel {
@@ -191,4 +205,51 @@ main {
     
     margin-left: 5px;
 }
+
+.loader {
+    border: 2px solid black;
+    box-shadow: 10px 10px 0 0 black;
+    
+    border-radius: 5px;
+    /* width: min(85vw, 650px); */
+    margin-block: 3rem;
+
+    background-color: var(--white);
+
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.loader__txt > p:nth-child(1) {
+    font-size: 2rem;
+}
+
+.loader__txt > p:nth-child(2) {
+    font-size: 0.75rem;
+}
+
+.spinner {
+    align-self: center;
+    margin-bottom: 1.5rem;
+
+    width: 48px;
+    height: 48px;
+    border: 5px solid var(--gray-400);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
 </style>
