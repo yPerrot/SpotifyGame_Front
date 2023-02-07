@@ -1,13 +1,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { getArtists } from '../assets/utils';
 
     let artists = [];
-
+    
     onMount(async () => {
-        const access_token = localStorage.getItem('access_token');
-        const res = await fetch(`http://localhost:8888/artists?limit=20&access_token=${access_token}`);
-        const json = await res.json();
-        artists = json.items;
+        artists = Object.values(await getArtists()).sort((a, b) => b.popularity - a.popularity);
     });
 
 </script>

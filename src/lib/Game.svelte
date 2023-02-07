@@ -1,94 +1,30 @@
 <script lang="ts">
     import { navigate } from 'svelte-routing';
+    import { getRandomArtists, type MyArtist } from '../assets/utils';
 
-    async function getArtist() {
-        const resp = await fetch('http://localhost:8888/artists?access_token=' + localStorage.getItem('access_token'));
-        const data = await resp.json();
-    
-        const a = Math.round(Math.random() * 9);
-        let b = Math.round(Math.random() * 9);
-        while (b === a) b = Math.round(Math.random() * 9);
-    
-        return [
-            {
-                img: data.items[a].images[0].url,
-                name: data.items[a].name,
-                color: await getAverageRGB(data.items[a].images[0].url),
-            },
-            {
-                img: data.items[b].images[0].url,
-                name: data.items[b].name,
-                color: await getAverageRGB(data.items[b].images[0].url),
-            },
-        ];
-    }
+    import faileImg from '/fail.png';
+    import succesImg from '/success.png';
 
-    async function getAverageRGB(imageURL: string): Promise<{ r: number; g: number; b: number; }> {
-        return new Promise((resolve) => {
-            // const imgEl: HTMLImageElement = document.createElement('img');
-            const imgEl = new Image();
-            imgEl.crossOrigin = 'Anonymous'; // HERE:
-    
-            imgEl.onload = () => {
-                const blockSize = 5; // only visit every 5 pixels
-                const defaultRGB = { r: 0, g: 0, b: 0 }; // for non-supporting envs
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext && canvas.getContext('2d');
-                let data: ImageData;
-                let i = -4;
-                const rgb = { r: 0, g: 0, b: 0 };
-                let count = 0;
-    
-                if (!context) {
-                    resolve(defaultRGB);
-                }
-    
-                const height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
-                const width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
-    
-                context.drawImage(imgEl, 0, 0);
-    
-                try {
-                    data = context.getImageData(0, 0, width, height);
-    
-                    const length = data.data.length;
-    
-                    while ( (i += blockSize * 4) < length ) {
-                        ++count;
-                        rgb.r += data.data[i];
-                        rgb.g += data.data[i+1];
-                        rgb.b += data.data[i+2];
-                    }
-    
-                    // ~~ used to floor values
-                    rgb.r = ~~(rgb.r/count);
-                    rgb.g = ~~(rgb.g/count);
-                    rgb.b = ~~(rgb.b/count);
-    
-                    resolve(rgb);
-                } catch (e) {
-                    /* security error, img on diff domain */
-                    alert('x');
-                    console.log('HERE');
-    
-                    resolve(defaultRGB);
-                }
-            };
-    
-            imgEl.src = imageURL;
-        });
-    }
+    let promise = getRandomArtists();
 
-    let promise = getArtist();
-
-    function reload() {
-        const currentId = progress.findIndex((e) => e === 'current');
-        if (currentId === progress.length -1) navigate('/display', { replace: true });
-
-        progress[currentId] = Math.random() > 0.5 ? 'passed' : 'failed';
-        if (currentId < progress.length - 1) progress[currentId + 1] = 'current';
+    function reload(event: MouseEvent & {currentTarget: EventTarget & HTMLDivElement;}, artistId: string, artists: [MyArtist, MyArtist]) {
+        const img = event.currentTarget.querySelector<HTMLImageElement>('* > img');
     
-        promise = getArtist();
+        const mostPopularArtist = artists[0].popularity > artists[1].popularity ? artists[0] : artists[1];
+        const doPassed = mostPopularArtist.id === artistId;
+
+        if (doPassed) img.src = succesImg;
+        else img.src = faileImg;
+    
+        setTimeout((doPassed) => {
+            const currentId = progress.findIndex((e) => e === 'current');
+            if (currentId === progress.length -1) navigate('/display', { replace: true });
+    
+            progress[currentId] = doPassed ? 'passed' : 'failed';
+            if (currentId < progress.length - 1) progress[currentId + 1] = 'current';
+    
+            promise = getRandomArtists();
+        }, 1000, doPassed);
     }
 
     function isReadable(red: number, green: number, blue: number) {
@@ -125,17 +61,19 @@
     <!-- <div class="separator">VS</div> -->
 
     {#await promise}
-        <p>...waiting</p>
+    <!-- TODO: Add style -->
+        <p>Bip Boup, Creating your profile</p>
+        <p>(Kiding, Waiting for the Spotify API to respond)</p>
     {:then data}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="left game-panel" style="background-color: rgb({data[0].color.r + ',' + data[0].color.g + ',' + data[0].color.b});" on:click={reload}>
-            <img class="artist-img" src={data[0].img} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isReadable(data[0].color.r, data[0].color.g, data[0].color.b) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
+        <div class="left game-panel" style="background-color: rgb({data[0].color.r + ',' + data[0].color.g + ',' + data[0].color.b});" on:click={(event) => reload(event, data[0].id, data)}>
+            <img class="artist-img" src={data[0].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isReadable(data[0].color.r, data[0].color.g, data[0].color.b) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
             <span class="artist-name" style="color: {isReadable(data[0].color.r, data[0].color.g, data[0].color.b) ? "rgb(16, 16, 16)" : "white"}">{data[0].name}</span>
         </div>
 
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="right game-panel" style="background-color: rgb({data[1].color.r + ',' + data[1].color.g + ',' + data[1].color.b});" on:click={reload}>
-            <img class="artist-img" src={data[1].img} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isReadable(data[1].color.r, data[1].color.g, data[1].color.b) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
+        <div class="right game-panel" style="background-color: rgb({data[1].color.r + ',' + data[1].color.g + ',' + data[1].color.b});" on:click={(event) => reload(event, data[1].id, data)}>
+            <img class="artist-img" src={data[1].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isReadable(data[1].color.r, data[1].color.g, data[1].color.b) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
             <span class="artist-name" style="color: {isReadable(data[1].color.r, data[1].color.g, data[1].color.b) ? "rgb(16, 16, 16)" : "white"}">{data[1].name}</span>
         </div>
     {:catch error}
@@ -235,42 +173,8 @@ main {
     flex-direction: column;
 }
 
-.separator {
-    position: absolute;
-
-    /* top: 10px;
-
-    padding: 0.5rem 1rem;
-    border: var(--border);
-    background-color: white;
-    border-radius: 10px; */
-    
-
-    font-size: 5rem;
-    font-weight: 900;
-
-    color: white;
-
-    -webkit-text-stroke: 6px #000;
-
-    width: fit-content;
-    height: fit-content;
-
-    margin:auto;
-    /* margin-right:auto; */
-    
-    inset: 0;
-
-    /* left:0; */
-    /* right:0; */
-}
-
 .counter {
-    /* width: 15px; */
-    /* height: 15px; */
-
     align-self: center;
-    /* background-color: red; */
 }
 
 .counter >  span {
