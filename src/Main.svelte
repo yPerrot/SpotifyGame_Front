@@ -22,6 +22,7 @@
     {#if loggedInValue}
         <Route path="game" component="{Game}" />
         <Route path="display" component="{Display}" />
+        <Route path="/" component="{Game}" ></Route>
     {:else}
         <Route path="/"><Login /></Route>
     {/if}
