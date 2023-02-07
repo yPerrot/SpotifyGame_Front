@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { getArtists } from '../assets/utils';
+    import { score } from '../store';
 
     let artists = [];
     
@@ -8,13 +9,20 @@
         artists = Object.values(await getArtists()).sort((a, b) => b.popularity - a.popularity);
     });
 
+    function getMessage(score: number) {
+        if (score === 0) return 'Spotify is completely off the mark ...';
+        if (score < 3) return 'Spotify may have misunderstood your tastes ...';
+        if (score < 5) return 'almost perfect!';
+        return 'you know your taste perfectly!';
+    }
+
 </script>
 
 <main>
 
     <header>
         <h2>Congratulation!</h2>
-        <p>You got <b>5/5</b>, you know your taste perfectly!</p>
+        <p>You got <b>{$score}/5</b>, {getMessage($score)}</p>
         <p>Now, here is the list of your 20 most favorit artists of all time</p>
     </header>
 

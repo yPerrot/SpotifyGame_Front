@@ -1,6 +1,7 @@
 <script lang="ts">
     import { navigate } from 'svelte-routing';
     import { getRandomArtists, type MyArtist } from '../assets/utils';
+    import { score } from '../store';
 
     import faileImg from '/fail.png';
     import succesImg from '/success.png';
@@ -17,6 +18,7 @@
         else img.src = faileImg;
     
         setTimeout((doPassed) => {
+            if (doPassed) score.update((score) => score + 1);
             const currentId = progress.findIndex((e) => e === 'current');
             if (currentId === progress.length -1) navigate('/display', { replace: true });
     
