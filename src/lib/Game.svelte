@@ -7,6 +7,7 @@
     import succesImg from '/success.png';
 
     let promise = getRandomArtists();
+    score.set(0); // Reset score value
 
     function reload(event: MouseEvent & {currentTarget: EventTarget & HTMLDivElement;}, artistId: string, artists: [MyArtist, MyArtist]) {
         const img = event.currentTarget.querySelector<HTMLImageElement>('* > img');
