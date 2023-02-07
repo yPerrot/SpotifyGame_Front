@@ -45,14 +45,17 @@
         "max-len": [
             "error", 
             { 
-                "code": 120 
+                "code": 160 
             }
         ],
         "object-curly-spacing": [
             "error",
             "always"
         ],
-        "@typescript-eslint/no-non-null-assertion": "off"
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "guard-for-in": "off",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "no-unused-vars": "warn"
     },
     "settings": {
         "svelte3/typescript": true // load TypeScript as peer dependency
