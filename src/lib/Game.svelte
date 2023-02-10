@@ -44,7 +44,6 @@
 
 
 {#await promise}
-    <!-- TODO: Add style -->
     <main>
         <div class="loader">
             <div class="spinner"></div>
@@ -62,11 +61,11 @@
                 {#each progress as state, i}
 
                     {#if state === 'passed'}
-                        <span style="background-color: var(--green);"></span>
+                        <span class="counter__passed"></span>
                     {:else if state === 'failed'}
-                        <span style="background-color: var(--red);"></span>
+                        <span class="counter__failed"></span>
                     {:else if state === 'current'}
-                        <span style="width: 30px; border-radius: 15px;"></span>
+                        <span class="counter__current"></span>
                     {:else}
                         <span></span>
                     {/if}
@@ -204,6 +203,19 @@ main {
     background-color: grey;
     
     margin-left: 5px;
+}
+
+.counter__passed {
+    background-color: #4caf50;
+}
+
+.counter__failed {
+    background-color: #f44336;
+}
+
+.counter__current {
+    width: 30px;
+    border-radius: 15px;
 }
 
 .loader {
