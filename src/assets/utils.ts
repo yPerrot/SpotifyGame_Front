@@ -20,6 +20,10 @@ function randomIntFromInterval(min: number, max: number) { // min included
     return Math.floor(Math.random() * (max - min) + min);
 }
 
+export function getBackEndURL() {
+    return import.meta.env.DEV ? 'http://localhost:8888' : 'https://spotify-game.fly.dev';
+}
+
 export async function getRandomArtists(): Promise<[MyArtist, MyArtist]> {
     const [firstId, secondId] = getRandomNum();
     const artistsObj = await getArtists();
@@ -40,7 +44,7 @@ export async function getArtists() {
 
     if (JSON.stringify(artistsObj) === '{}') {
         const access_token = localStorage.getItem('access_token');
-        const res = await fetch(`http://localhost:8888/artists?limit=20&access_token=${access_token}`);
+        const res = await fetch(`${getBackEndURL()}/artists?limit=20&access_token=${access_token}`);
         const json: TopArtistsReponse = await res.json();
 
         const obj: { [artistId: string]: MyArtist}= {};

@@ -1,8 +1,9 @@
 <script lang="ts">
+    import { getBackEndURL } from '../assets/utils';
     import spotifyLogo from '/spotify.svg';
 
     async function login() {
-        location.href = 'http://localhost:8888/login';
+        location.href = `${getBackEndURL()}/login`;
     }
 </script>
 
