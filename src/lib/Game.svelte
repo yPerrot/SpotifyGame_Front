@@ -63,14 +63,17 @@
     <main class="game-main">
         <header>
             <span>Who is your favorit artist between those 2?</span>
-            <div class="counter">
+            <div class="counter__container">
                 {#each progress as state, i}
 
-                    {#if state === 'passed'} <span class="counter__passed"></span>
-                    {:else if state === 'failed'} <span class="counter__failed"></span>
-                    {:else if state === 'current'} <span class="counter__current"></span>
+                    {#if state === 'passed'}
+                        <span class="counter counter__passed"></span>
+                    {:else if state === 'failed'}
+                        <span class="counter counter__failed"></span>
+                    {:else if state === 'current'}
+                        <span class="counter counter__current"></span>
                     {:else}
-                        <span></span>
+                        <span class="counter"></span>
                     {/if}
 
                 {/each}
@@ -184,11 +187,11 @@ main {
     flex-direction: column;
 }
 
-.counter {
+.counter__container {
     align-self: center;
 }
 
-.counter >  span {
+.counter {
     height: 10px;
     width: 10px;
     border-radius: 50%;
