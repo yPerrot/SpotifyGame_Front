@@ -2,15 +2,17 @@ import { get } from 'svelte/store';
 import { artists } from '../store';
 import type { TopArtistsReponse, Image } from '../types/Spotify';
 
+export type Color = {
+    r: number;
+    g: number;
+    b: number;
+}
+
 export type MyArtist = {
     id: string;
     name: string;
     popularity: number;
-    color: {
-        r: number;
-        g: number;
-        b: number;
-    };
+    color: Color;
     images: Image[];
 }
 

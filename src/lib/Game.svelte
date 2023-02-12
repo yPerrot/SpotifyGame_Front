@@ -1,6 +1,6 @@
 <script lang="ts">
     import { navigate } from 'svelte-routing';
-    import { getRandomArtists, type MyArtist } from '../assets/utils';
+    import { getRandomArtists, type Color, type MyArtist } from '../assets/utils';
     import { score } from '../store';
 
     import faileImg from '/fail.png';
@@ -9,10 +9,12 @@
     let promise = getRandomArtists();
     score.set(0); // Reset score value
 
-    function reload(event: MouseEvent & {currentTarget: EventTarget & HTMLDivElement;}, artistId: string, artists: [MyArtist, MyArtist]) {
+    type OnClickEvent = MouseEvent & { currentTarget: EventTarget & HTMLDivElement };
+    function imgOnClick(event: OnClickEvent, artistId: string, artists: [MyArtist, MyArtist]) {
         const img = event.currentTarget.querySelector<HTMLImageElement>('* > img');
     
-        const mostPopularArtist = artists[0].popularity > artists[1].popularity ? artists[0] : artists[1];
+        const [firstArtist, secondArtist] = artists;
+        const mostPopularArtist = firstArtist.popularity > secondArtist.popularity ? firstArtist : secondArtist;
         const doPassed = mostPopularArtist.id === artistId;
 
         if (doPassed) img.src = succesImg;
@@ -30,9 +32,13 @@
         }, 1000, doPassed);
     }
 
-    function isReadable(red: number, green: number, blue: number) {
+    function isColorReadableOnWhite(color: Color) {
         // https://stackoverflow.com/questions/946544/good-text-foreground-color-for-a-given-background-color/946734#946734
-        return (red*0.299 + green*0.587 + blue*0.114) > 128;
+        return (color.r*0.299 + color.g*0.587 + color.b*0.114) > 128;
+    }
+
+    function getColorString(color: Color) {
+        return `rgb(${color.r}, ${color.g}, ${color.b})`;
     }
 
     type ProgressStates = 'current' | 'passed' | 'failed' | 'todo'
@@ -60,12 +66,9 @@
             <div class="counter">
                 {#each progress as state, i}
 
-                    {#if state === 'passed'}
-                        <span class="counter__passed"></span>
-                    {:else if state === 'failed'}
-                        <span class="counter__failed"></span>
-                    {:else if state === 'current'}
-                        <span class="counter__current"></span>
+                    {#if state === 'passed'} <span class="counter__passed"></span>
+                    {:else if state === 'failed'} <span class="counter__failed"></span>
+                    {:else if state === 'current'} <span class="counter__current"></span>
                     {:else}
                         <span></span>
                     {/if}
@@ -75,15 +78,15 @@
         </header>
 
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="left game-panel" style="background-color: rgb({data[0].color.r + ',' + data[0].color.g + ',' + data[0].color.b});" on:click={(event) => reload(event, data[0].id, data)}>
-            <img class="artist-img" src={data[0].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isReadable(data[0].color.r, data[0].color.g, data[0].color.b) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
-            <span class="artist-name" style="color: {isReadable(data[0].color.r, data[0].color.g, data[0].color.b) ? "rgb(16, 16, 16)" : "white"}">{data[0].name}</span>
+        <div class="left game-panel" style="background-color: {getColorString(data[0].color)};" on:click={(e) => imgOnClick(e, data[0].id, data)}>
+            <img class="artist-img" src={data[0].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isColorReadableOnWhite(data[0].color) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
+            <span class="artist-name" style="color: {isColorReadableOnWhite(data[0].color) ? "rgb(16, 16, 16)" : "white"}">{data[0].name}</span>
         </div>
 
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="right game-panel" style="background-color: rgb({data[1].color.r + ',' + data[1].color.g + ',' + data[1].color.b});" on:click={(event) => reload(event, data[1].id, data)}>
-            <img class="artist-img" src={data[1].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isReadable(data[1].color.r, data[1].color.g, data[1].color.b) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
-            <span class="artist-name" style="color: {isReadable(data[1].color.r, data[1].color.g, data[1].color.b) ? "rgb(16, 16, 16)" : "white"}">{data[1].name}</span>
+        <div class="right game-panel" style="background-color: {getColorString(data[1].color)};" on:click={(e) => imgOnClick(e, data[1].id, data)}>
+            <img class="artist-img" src={data[1].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isColorReadableOnWhite(data[1].color) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
+            <span class="artist-name" style="color: {isColorReadableOnWhite(data[1].color) ? "rgb(16, 16, 16)" : "white"}">{data[1].name}</span>
         </div>
     </main>
 {:catch error}
@@ -143,14 +146,6 @@ main {
 .game-panel:hover > .artist-img,
 .game-panel:hover > .artist-name {
     transform: scale(1.1);
-}
-
-.left {
-    background-color: var(--purple);
-}
-
-.right {
-    background-color: var(--green);
 }
 
 .artist-name {
