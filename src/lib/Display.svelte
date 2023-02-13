@@ -21,9 +21,9 @@
 <main>
 
     <header>
-        <h2>Congratulation!</h2>
+        <h2>Congratulations!</h2>
         <p>You got <b>{$score}/5</b>, {getMessage($score)}</p>
-        <p>Now, here is the list of your 20 most favorit artists of all time</p>
+        <p>Now, here is the list of your 20 most favourite artists of all time.</p>
     </header>
 
     <div class="top">

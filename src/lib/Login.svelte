@@ -9,8 +9,11 @@
 
 <main class="login-main">
     <div class="panel">
-        <h1>Who is My Favorite ...</h1>
-        <span class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates voluptas quasi doloribus ipsam aut cupiditate dolorum sapiente iusto pariatur hic ut, modi praesentium? Ducimus, voluptatem.</span>
+        <h1>Who is your favorite artist?</h1>
+        <span class="text">
+            Let's find out who your favourite artists are, or at least your most listened to artists on Spotify! 
+            All you have to do is log in with your Spotify account by clicking the button below.
+        </span>
         <button class="btn login-btn" on:click={login}>
             <span>Log in with Spotify</span>
             <img src={spotifyLogo} alt="Spotify Icon">
@@ -45,9 +48,13 @@ main {
     padding: 2rem;
 }
 
+h1 {
+    margin-bottom: 1rem;
+}
+
 .login-btn {
     margin: 0 auto;
-    margin-top: 4rem;
+    margin-top: 3rem;
 
     font-size: 2rem;
 

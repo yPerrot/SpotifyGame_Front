@@ -30,7 +30,8 @@
 </script>
 
 <header>
-    <div class="logo">WhoIsMyFavorit</div>
+    <!-- <div class="logo">WhoIsMyFavorit</div> -->
+    <div class="logo">SpotifyGame</div>
     
     {#if loggedInValue}
         <button class="btn logout-btn" on:click={logout}>

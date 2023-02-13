@@ -55,14 +55,14 @@
             <div class="spinner"></div>
             <div class="loader__txt">
                 <p>Bip Boup, Creating your profile</p>
-                <p>(Kiding, Waiting for the Spotify API to respond)</p>
+                <p>(Kidding, waiting for the Spotify API to respond)</p>
             </div>
         </div>
     </main>
 {:then data}
     <main class="game-main">
         <header>
-            <span>Who is your favorit artist between those 2?</span>
+            <span>Who is your favourite artist between these two?</span>
             <div class="counter__container">
                 {#each progress as state, i}
 
