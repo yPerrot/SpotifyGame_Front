@@ -11,26 +11,11 @@
         localStorage.clear();
         loggedIn.set(false);
         navigate('/', { replace: true });
-        /*
-        const res = await fetch('http://localhost:8888/tracks?access_token=' + localStorage.getItem('access_token'), {
-            mode: 'cors',
-            headers: {
-                // 'Access-Control-Allow-Origin':'*',
-                // 'Access-Control-Allow-Credentials': 'true',
-            //     Cookie: `access_token=${localStorage.getItem('access_token')}; `
-            },
-            credentials: 'include',
-            // credentials: "same-origin",
-        })
-    
-        console.log(await res.json());
-        */
     }
     
 </script>
 
 <header>
-    <!-- <div class="logo">WhoIsMyFavorit</div> -->
     <div class="logo">SpotifyGame</div>
     
     {#if loggedInValue}
@@ -53,19 +38,40 @@ header {
     font-family: 'DynaPuff', serif;
     font-weight: 700;
     font-size: 1.5rem;
-
+    
     border-right: var(--border);
 }
 
 .logout-btn {
     padding: 0.5rem 1rem;
     margin: 1rem 1rem 1rem auto;
-
+    
     background-color: var(--pink);
     --btn-hover-transition: 3px;
 }
 
 .logout-btn > img {
     width: 20px;
+}
+
+@media screen and (max-width: 640px) {
+
+    .logo {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .logout-btn {
+        padding: 0.25rem 0.5rem;
+        margin: 0.5rem 1rem 0.5rem auto;
+    }
+
+    .logout-btn > span {
+        font-size: 0.875rem;    
+    }
+
+    .logout-btn > img {
+        width: 15px;
+    }
 }
 </style>

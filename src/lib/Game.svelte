@@ -262,4 +262,17 @@ main {
         transform: rotate(360deg);
     }
 } 
+
+@media screen and (max-width: 640px) {
+    .artist-name {
+        font-size: 1rem;
+        letter-spacing: 0;
+        font-weight: 500;
+    }
+    .game-panel > .artist-img {
+        height: 150px;
+        width: 150px;
+    }
+}
+
 </style>
