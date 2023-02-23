@@ -3,7 +3,7 @@
     import { getRandomArtists, type Color, type MyArtist } from '../assets/utils';
     import { score } from '../store';
 
-    import WaitingPanel from './WaitingPanel.svelte';
+    import WaitingPanel from './components/WaitingPanel.svelte';
 
     import faileImg from '/fail.png';
     import succesImg from '/success.png';

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { navigate } from 'svelte-routing';
-    import { loggedIn } from '../store';
+    import { loggedIn } from '../../store';
     import exitLogo from '/exit.svg';
 
     let loggedInValue: boolean;

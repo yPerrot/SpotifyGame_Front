@@ -3,8 +3,8 @@
     
     import { loggedIn } from './store';
     
-    import Header from './lib/Header.svelte';
-    import Footer from './lib/Footer.svelte';
+    import Header from './lib/components/Header.svelte';
+    import Footer from './lib/components/Footer.svelte';
     import Login from './lib/Login.svelte';
     import Game from './lib/Game.svelte';
     import Display from './lib/Display.svelte';
