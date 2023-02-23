@@ -3,6 +3,8 @@
     import { getRandomArtists, type Color, type MyArtist } from '../assets/utils';
     import { score } from '../store';
 
+    import WaitingPanel from './WaitingPanel.svelte';
+
     import faileImg from '/fail.png';
     import succesImg from '/success.png';
 
@@ -51,13 +53,7 @@
 
 {#await promise}
     <main>
-        <div class="loader">
-            <div class="spinner"></div>
-            <div class="loader__txt">
-                <p>Bip Boup, Creating your profile</p>
-                <p>(Kidding, waiting for the Spotify API to respond)</p>
-            </div>
-        </div>
+        <WaitingPanel />
     </main>
 {:then data}
     <main class="game-main">
@@ -82,9 +78,11 @@
 
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="left game-panel" style="background-color: {getColorString(data[0].color)};" on:click={(e) => imgOnClick(e, data[0].id, data)}>
-            <img class="artist-img" src={data[0].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isColorReadableOnWhite(data[0].color) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
-            <span class="artist-name" style="color: {isColorReadableOnWhite(data[0].color) ? "rgb(16, 16, 16)" : "white"}">{data[0].name}</span>
-        </div>
+            <!-- <div class="img-container"> -->
+                <img class="artist-img" src={data[0].images[0].url} alt="" style="box-shadow: 0px 0px 31px 0px rgba({isColorReadableOnWhite(data[0].color) ? "0, 0, 0" : "255, 255, 255"}, 0.2);">
+                <span class="artist-name" style="color: {isColorReadableOnWhite(data[0].color) ? "rgb(16, 16, 16)" : "white"}">{data[0].name}</span>
+            </div>
+        <!-- </div> -->
 
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="right game-panel" style="background-color: {getColorString(data[1].color)};" on:click={(e) => imgOnClick(e, data[1].id, data)}>
@@ -216,52 +214,9 @@ main {
     border-radius: 15px;
 }
 
-.loader {
-    border: 2px solid black;
-    box-shadow: 10px 10px 0 0 black;
-    
-    border-radius: 5px;
-    /* width: min(85vw, 650px); */
-    margin-block: 3rem;
-
-    background-color: var(--white);
-
-    padding: 2rem;
-
-    display: flex;
-    flex-direction: column;
-}
-
-.loader__txt > p:nth-child(1) {
-    font-size: 2rem;
-}
-
-.loader__txt > p:nth-child(2) {
-    font-size: 0.75rem;
-}
-
-.spinner {
-    align-self: center;
-    margin-bottom: 1.5rem;
-
-    width: 48px;
-    height: 48px;
-    border: 5px solid var(--gray-400);
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-}
-
-@keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-} 
+/* .img-container {
+    position: relative;
+} */
 
 @media screen and (max-width: 640px) {
     .artist-name {
