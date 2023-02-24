@@ -3,6 +3,8 @@
     import { getRandomArtists, type Color, type MyArtist } from '../assets/utils';
     import { score } from '../store';
 
+    import ScoreCounter from './components/ScoreCounter.svelte';
+    import type { Progress } from './components/ScoreCounter.svelte';
     import WaitingPanel from './components/WaitingPanel.svelte';
 
     import faileImg from '/fail.png';
@@ -43,9 +45,7 @@
         return `rgb(${color.r}, ${color.g}, ${color.b})`;
     }
 
-    type ProgressStates = 'current' | 'passed' | 'failed' | 'todo'
-
-    const progress: ProgressStates[] = ['current', 'todo', 'todo', 'todo', 'todo'];
+    const progress: Progress = ['current', 'todo', 'todo', 'todo', 'todo'];
 
 </script>
 
@@ -57,24 +57,7 @@
     </main>
 {:then data}
     <main class="game-main">
-        <header>
-            <span>Who is your favourite artist between these two?</span>
-            <div class="counter__container">
-                {#each progress as state, i}
-
-                    {#if state === 'passed'}
-                        <span class="counter counter__passed"></span>
-                    {:else if state === 'failed'}
-                        <span class="counter counter__failed"></span>
-                    {:else if state === 'current'}
-                        <span class="counter counter__current"></span>
-                    {:else}
-                        <span class="counter"></span>
-                    {/if}
-
-                {/each}
-            </div>
-        </header>
+        <ScoreCounter progress={progress} />
 
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="left game-panel" style="background-color: {getColorString(data[0].color)};" on:click={(e) => imgOnClick(e, data[0].id, data)}>
@@ -161,57 +144,16 @@ main {
     transition: transform .3s;
 }
 
-.game-main > header {
+:global(.counter) {
     position: absolute;
 
     top: 10px;
-
-    padding: 0.5rem 1rem;
-    border: var(--border);
-    background-color: white;
-    border-radius: 10px;
-    
-
-    width: fit-content;
-    max-width: 80vw;
 
     margin-left:auto;
     margin-right:auto;
     
     left:0;
     right:0;
-
-    display: flex;
-    flex-direction: column;
-}
-
-.counter__container {
-    align-self: center;
-}
-
-.counter {
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-
-    display: inline-block;
-    
-    background-color: grey;
-    
-    margin-left: 5px;
-}
-
-.counter__passed {
-    background-color: #4caf50;
-}
-
-.counter__failed {
-    background-color: #f44336;
-}
-
-.counter__current {
-    width: 30px;
-    border-radius: 15px;
 }
 
 /* .img-container {
