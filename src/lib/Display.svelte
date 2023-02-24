@@ -48,7 +48,6 @@ main {
     flex-direction: column;
 
     flex: 1;
-    /* background-color: #f1f333; */
     background-color: #ffd567;
 
     padding: 3rem;
@@ -60,7 +59,7 @@ header {
     border-radius: 25px;
 
     padding: 2rem 3rem;
-    width: 700px;
+    max-width: 700px;
 
     margin-bottom: 4rem;
 
@@ -78,7 +77,10 @@ header > h2 {
 
     flex-direction: column;
 
-    padding: 3rem;
+    max-width: 450px;
+    width: 100%;
+
+    padding: 2rem;
 
     border: 2px solid black;
     box-shadow: 10px 10px 0 0 black;
@@ -87,19 +89,15 @@ header > h2 {
 }
 
 .artist {
-    /* background-color: var(--purple); */
     background-color: rgb(231, 223, 255);
     
-    width: 300px;
+    width: 80%;
 
     display: flex;
-    gap: 1rem;
     align-items: center;
-    /* justify-content: center; */
     flex-direction: row;
     
     padding: 0.5rem 1rem;
-    /* margin-bottom: 1rem; */
     
     font-weight: 500;
     font-size: 1.25rem;
@@ -127,6 +125,8 @@ header > h2 {
     object-fit: cover;
 
     flex-shrink: 0;
+
+    margin-inline: 0.5rem 1rem;
 }
 
 .name {
@@ -139,7 +139,7 @@ header > h2 {
 .artist:nth-child(1),
 .artist:nth-child(2),
 .artist:nth-child(3) {
-    width: 400px;
+    width: 100%;
     font-size: 1.75rem;
     border-radius: 70px;
     margin-bottom: 0.5rem;
@@ -151,4 +151,38 @@ header > h2 {
     height: 50px;
     width: 50px;
 }
+
+@media screen and (max-width: 640px) {
+    main {
+        padding: 3rem 1.5rem;
+    }
+    header {
+        padding: 1rem 2rem;
+    }
+    .top {
+        padding: 1rem;
+    }
+    .artist{
+        font-size: 1rem;
+        font-weight: 400;
+    }
+    .artist > img {
+        height: 25px;
+        width: 25px;
+        margin-inline: 0.25rem 0.5rem;
+    }
+    .artist:nth-child(1),
+    .artist:nth-child(2),
+    .artist:nth-child(3) {
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
+    .artist:nth-child(1) > img,
+    .artist:nth-child(2) > img,
+    .artist:nth-child(3) > img {
+        height: 40px;
+        width: 40px;
+    }
+}
+
 </style>
