@@ -13,8 +13,7 @@
     box-shadow: 10px 10px 0 0 black;
     
     border-radius: 5px;
-    /* width: min(85vw, 650px); */
-    margin-block: 3rem;
+    margin: 3rem 1rem;
 
     background-color: var(--white);
 
@@ -54,5 +53,14 @@
         transform: rotate(360deg);
     }
 } 
+
+@media screen and (max-width: 640px) {
+    .loader {
+        padding: 1.5rem 1rem;
+    }
+    .loader__txt > p:nth-child(1) {
+        font-size: 1.25rem;
+    }
+}
 
 </style>
